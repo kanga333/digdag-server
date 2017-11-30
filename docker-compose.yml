@@ -1,0 +1,27 @@
+version: '2'
+services:
+  digdag:
+    image: kanga333/digdag-server
+    ports:
+      - "65432:65432"
+      - "65433:65433"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp:/tmp
+  postgresql:
+    image: postgres:9
+    environment:
+      - POSTGRES_USER=digdag
+      - POSTGRES_PASSWORD=digdag
+      - POSTGRES_DB=digdag
+    volumes:
+     - data:/var/lib/postgresql/data
+    command: 
+     - postgres
+     - -c
+     - superuser_reserved_connections=30
+     - -c
+     - max_connections=1000
+
+volumes:
+  data:
